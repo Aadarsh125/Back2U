@@ -37,7 +37,7 @@ function Find() {
     <main id="findpage">
       <Navbar />
       <section>
-        <h1 className="lfh1">Lost and Found Items</h1>
+        <h1 className="lfh1">Your item is just a short distance away</h1>
         <div className="item-container">
           <HashLoader
             color="#fdf004"

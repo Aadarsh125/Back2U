@@ -1,11 +1,17 @@
-import express, { request } from "express";
+import express from "express";
 import { PORT, mongoURL } from "./config.js";
 import mongoose from "mongoose";
 import { Item } from "./models/itemmodel.js";
 import cors from "cors";
 import { createRequire } from "module";
+import fs from "fs";
 const require = createRequire(import.meta.url);//to require require for multer
 
+// Ensure 'files' directory exists
+const filesDir = "./files";
+if (!fs.existsSync(filesDir)) {
+  fs.mkdirSync(filesDir);
+}
 
 const app = express();
 app.use(express.json());
@@ -31,6 +37,10 @@ const upload = multer({ storage: storage });
 
 // ============================== get =================================
 
+app.get("/", (req, res) => {
+  res.send("Lost and Found backend is running!");
+});
+
 app.get("/item", async (req, res) => {
   try {
     const items = await Item.find({});
@@ -55,7 +65,7 @@ app.post("/item",upload.single("file"), async (req,res)=>{
       !req.body.title ||
       !req.body.description
     ) {
-      return res.status(400).send({ message: "all fields sent" });
+      return res.status(400).send({ message: "all fields required" });
     }
 
    const newItem = {
@@ -64,7 +74,7 @@ app.post("/item",upload.single("file"), async (req,res)=>{
       phoneno: req.body.phoneno,
       title: req.body.title,
       description: req.body.description,
-      image: req.file.filename,
+      image: req.file ? req.file.filename : null,
     };
    const item=await Item.create(newItem);
    return res.status(200).send(item);

@@ -9,7 +9,8 @@ function Home(){
         <ParticlesBackground />
         </div>
         <div className="hero">
-          <h1>Lost and Found</h1>
+          {/* <h1>Lost and Found</h1> */}
+          <h1>BACK2U</h1>
           <a href="/find">
             <button>Find item</button>
           </a>
